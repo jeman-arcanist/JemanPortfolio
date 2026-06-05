@@ -4349,10 +4349,20 @@ header#overview .hero-portrait {
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.13em;
-  padding: 0.42rem 0.72rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--card) 86%, var(--bg));
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+#experience .section-content > .edu-detail {
+  color: var(--text) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.82rem;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .edu-capsules {
