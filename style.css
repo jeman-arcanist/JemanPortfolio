@@ -4451,6 +4451,22 @@ header#overview .hero-portrait {
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
 }
 
+.stealth-logo-img {
+  width: 56px !important;
+  height: 56px !important;
+  flex: 0 0 56px;
+  object-fit: cover;
+  border: 1px solid var(--line) !important;
+  border-radius: 16px !important;
+  background: #050505;
+  padding: 0 !important;
+}
+
+header#overview .hero-image-wrap,
+header#overview .hero-portrait {
+  border-radius: 0 !important;
+}
+
 .live-status--current {
   color: #16a34a;
   background: rgba(34, 197, 94, 0.08);
