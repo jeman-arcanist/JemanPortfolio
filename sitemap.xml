@@ -6,5 +6,10 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <!-- Since this is a single page application / unified portfolio, the main route holds all priority weight -->
+  <url>
+    <loc>https://jeman.vercel.app/blog/one-tweet-changed-everything</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

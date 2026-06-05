@@ -116,7 +116,74 @@ function splitTextForReveal(selector, baseDelay = 0.1) {
 }
 
 // ─── Page switching ─────────────────────────
-function showPage(pageId) {
+const SITE_BASE_URL = 'https://jeman.vercel.app';
+const BLOG_POSTS = {
+  'one-tweet-changed-everything': {
+    pageId: 'blog-one-tweet-changed-everything',
+    title: 'One Tweet Changed Everything',
+    slug: '/blog/one-tweet-changed-everything',
+    excerpt: 'A cold email, a rejection, and one tweet that unexpectedly changed my summer. How sharing my journey online led to founders reaching out, startup opportunities, and a reminder that visibility creates luck.'
+  }
+};
+
+const DEFAULT_META = {
+  title: 'Jeman Kalita — Architecting Systems, Quant & AI',
+  description: 'The personal digital archive of Jeman Kalita. Building at the intersection of quantitative finance, artificial intelligence, and high-performance software systems.',
+  url: SITE_BASE_URL + '/',
+  type: 'website',
+  image: SITE_BASE_URL + '/og-image.jpg'
+};
+
+function setMeta(selector, attr, value) {
+  const el = document.querySelector(selector);
+  if (el) el.setAttribute(attr, value);
+}
+
+function updateMetadata(pageId) {
+  const post = Object.values(BLOG_POSTS).find(item => item.pageId === pageId);
+  const meta = post ? {
+    title: `${post.title} | Jeman Kalita`,
+    description: post.excerpt,
+    url: SITE_BASE_URL + post.slug,
+    type: 'article',
+    image: DEFAULT_META.image
+  } : DEFAULT_META;
+
+  document.title = meta.title;
+  setMeta('meta[name="title"]', 'content', meta.title);
+  setMeta('meta[name="description"]', 'content', meta.description);
+  setMeta('link[rel="canonical"]', 'href', meta.url);
+  setMeta('meta[property="og:type"]', 'content', meta.type);
+  setMeta('meta[property="og:url"]', 'content', meta.url);
+  setMeta('meta[property="og:title"]', 'content', meta.title);
+  setMeta('meta[property="og:description"]', 'content', meta.description);
+  setMeta('meta[property="og:image"]', 'content', meta.image);
+  setMeta('meta[property="twitter:url"]', 'content', meta.url);
+  setMeta('meta[property="twitter:title"]', 'content', meta.title);
+  setMeta('meta[property="twitter:description"]', 'content', meta.description);
+  setMeta('meta[property="twitter:image"]', 'content', meta.image);
+}
+
+function getRouteTarget() {
+  const path = location.pathname.replace(/\/$/, '');
+  const blogPath = path.match(/^\/blog\/([^/]+)$/);
+  if (blogPath && BLOG_POSTS[blogPath[1]]) return BLOG_POSTS[blogPath[1]].pageId;
+
+  const pathPage = path.replace(/^\//, '');
+  const validPages = ['projects', 'blogs', 'interests', 'contact'];
+  if (validPages.includes(pathPage)) return pathPage;
+
+  const rawHash = location.hash.replace(/^#(page-)?/, '') || 'home';
+  return ['home', ...validPages].includes(rawHash) ? rawHash : 'home';
+}
+
+function routeForPage(pageId) {
+  const post = Object.values(BLOG_POSTS).find(item => item.pageId === pageId);
+  if (post) return post.slug;
+  return pageId === 'home' ? '/' : '/' + pageId;
+}
+
+function showPage(pageId, shouldPush = true) {
   const allPages = document.querySelectorAll('.page');
   const allLinks = document.querySelectorAll('.nav-links a, .nav-brand');
 
@@ -136,7 +203,7 @@ function showPage(pageId) {
 
   // Update nav active state
   allLinks.forEach(a => {
-    a.classList.toggle('active', a.dataset.page === pageId);
+    a.classList.toggle('active', a.dataset.page === pageId || (pageId.startsWith('blog-') && a.dataset.page === 'blogs'));
   });
   syncNavSlider();
 
@@ -155,9 +222,11 @@ function showPage(pageId) {
   if (pageId === 'home') splitTextForReveal('#page-home .hero-name');
   splitTextForReveal(`#page-${pageId} .page-title`);
 
-  // Update hash without jump — clean URL (e.g. #contact not #page-contact)
-  const cleanHash = pageId === 'home' ? '#' : '#' + pageId;
-  history.replaceState(null, '', cleanHash);
+  updateMetadata(pageId);
+
+  if (shouldPush) {
+    history.pushState({ pageId }, '', routeForPage(pageId));
+  }
 }
 
 // ─── Bind nav links ──────────────────────────
@@ -166,6 +235,19 @@ document.querySelectorAll('[data-page]').forEach(link => {
     e.preventDefault();
     showPage(link.dataset.page);
   });
+});
+
+document.querySelectorAll('[data-blog-slug]').forEach(link => {
+  link.addEventListener('click', e => {
+    const post = BLOG_POSTS[link.dataset.blogSlug];
+    if (!post) return;
+    e.preventDefault();
+    showPage(post.pageId);
+  });
+});
+
+window.addEventListener('popstate', () => {
+  showPage(getRouteTarget(), false);
 });
 
 // ─── Parallax on hero image ──────────────────
@@ -179,11 +261,7 @@ if (heroWrap) {
 
 // ─── Init ────────────────────────────────────
 (function init() {
-  // Show home page or hash-specified page on load
-  // Support both old (#page-contact) and new (#contact) hash formats
-  const rawHash = location.hash.replace(/^#(page-)?/, '') || 'home';
-  const validPages = ['home', 'projects', 'blogs', 'interests', 'contact'];
-  const startPage = validPages.includes(rawHash) ? rawHash : 'home';
+  const startPage = getRouteTarget();
 
   document.querySelectorAll('.page').forEach(p => {
     p.style.display = 'none';
@@ -197,10 +275,11 @@ if (heroWrap) {
   }
 
   document.querySelectorAll('[data-page]').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === startPage);
+    a.classList.toggle('active', a.dataset.page === startPage || (startPage.startsWith('blog-') && a.dataset.page === 'blogs'));
   });
 
   syncNavSlider();
+  updateMetadata(startPage);
 
   // Initial split text reveals
   splitTextForReveal('.hero-name', 0.2);
@@ -255,38 +334,38 @@ if (heroWrap) {
 // ─── Dynamic Media Cover System ─────────────────────────
 const DYNAMIC_MEDIA = {
   sports: [
-    'interests/Sports/d04e6cb8f2aa1c2f13fe4d7085ea8c23.mp4'
+    '/interests/Sports/d04e6cb8f2aa1c2f13fe4d7085ea8c23.mp4'
   ],
   poker: [
-    'interests/Poker/download (1).jpg',
-    'interests/Poker/download.jpg',
-    'interests/Poker/glowing lights casino chips and cards s Poker cards floating, gambling and casino concept , banner copy space  ,AI_ Stock Photo _ Adobe Stock.jpg'
+    '/interests/Poker/download (1).jpg',
+    '/interests/Poker/download.jpg',
+    '/interests/Poker/glowing lights casino chips and cards s Poker cards floating, gambling and casino concept , banner copy space  ,AI_ Stock Photo _ Adobe Stock.jpg'
   ],
   movies: [
-    'interests/movies/Movie Shooting Silhouette Film Festival Poster Background, Film Festival, Tv Series, Film Background Image And Wallpaper for Free Download.jpg',
-    'interests/movies/One of my favorite directors!.jpg',
-    'interests/movies/download (3).jpg',
-    'interests/movies/download.jpg'
+    '/interests/movies/Movie Shooting Silhouette Film Festival Poster Background, Film Festival, Tv Series, Film Background Image And Wallpaper for Free Download.jpg',
+    '/interests/movies/One of my favorite directors!.jpg',
+    '/interests/movies/download (3).jpg',
+    '/interests/movies/download.jpg'
   ],
   books: [
-    'interests/books/Free  Books, Retro, Library Background Images, Books Background Photo Background PNG and Vectors.jpg',
-    'interests/books/download (1).jpg',
-    'interests/books/download.jpg'
+    '/interests/books/Free  Books, Retro, Library Background Images, Books Background Photo Background PNG and Vectors.jpg',
+    '/interests/books/download (1).jpg',
+    '/interests/books/download.jpg'
   ],
   knowledge: [
-    'interests/knowledge stash/basically inside portia\'s head lmao.gif',
-    'interests/knowledge stash/download (1).gif',
-    'interests/knowledge stash/download.gif'
+    '/interests/knowledge stash/basically inside portia\'s head lmao.gif',
+    '/interests/knowledge stash/download (1).gif',
+    '/interests/knowledge stash/download.gif'
   ],
   people: [
-    'interests/inspiration/Dario-Amodei-copy.png',
-    'interests/inspiration/Elon-Musk.png',
-    'interests/inspiration/GettyImages-1258459705-e1700340943429.png',
-    'interests/inspiration/Jensen-Huang-copy.png',
-    'interests/inspiration/Mark-Zuckerberg.png',
-    'interests/inspiration/Sam-Altman.png',
-    'interests/inspiration/What Peter Thiel Saw in Jeffrey Epstein.jpg',
-    'interests/inspiration/meta-scale-ai-news-inc.png'
+    '/interests/inspiration/Dario-Amodei-copy.png',
+    '/interests/inspiration/Elon-Musk.png',
+    '/interests/inspiration/GettyImages-1258459705-e1700340943429.png',
+    '/interests/inspiration/Jensen-Huang-copy.png',
+    '/interests/inspiration/Mark-Zuckerberg.png',
+    '/interests/inspiration/Sam-Altman.png',
+    '/interests/inspiration/What Peter Thiel Saw in Jeffrey Epstein.jpg',
+    '/interests/inspiration/meta-scale-ai-news-inc.png'
   ]
 };
 

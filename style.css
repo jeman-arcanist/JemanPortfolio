@@ -564,6 +564,138 @@ section:hover .section-inner {
 
 /* ─── CONTACT ─────────────────────────────── */
 
+/* --- BLOGS --- */
+.blog-card {
+  display: block;
+  max-width: 680px;
+  color: inherit;
+  text-decoration: none;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(232, 230, 225, 0.9);
+  border-bottom: 1px solid rgba(232, 230, 225, 0.9);
+  transition: transform 0.24s ease, border-color 0.24s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(154, 105, 50, 0.42);
+}
+
+.blog-card-meta,
+.blog-article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  align-items: center;
+  font-family: Georgia, serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a99d90;
+}
+
+.blog-card-meta span:not(:last-child)::after,
+.blog-article-meta span:not(:last-child)::after {
+  content: "/";
+  margin-left: 0.9rem;
+  color: #d8d2ca;
+}
+
+.blog-card h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.55rem, 4vw, 2.35rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: #111;
+  margin: 0.7rem 0 0.7rem;
+}
+
+.blog-card p {
+  font-family: Georgia, serif;
+  font-size: 0.97rem;
+  line-height: 1.8;
+  color: #62584f;
+  max-width: 620px;
+}
+
+.blog-read-more {
+  display: inline-flex;
+  margin-top: 1rem;
+  font-family: Georgia, serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6f4720;
+  border-bottom: 1px solid rgba(111, 71, 32, 0.34);
+  padding-bottom: 2px;
+}
+
+.blog-article {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 2rem 0;
+}
+
+.blog-article-header {
+  max-width: 720px;
+  padding-bottom: 56px;
+}
+
+.blog-back-link {
+  display: inline-flex;
+  margin-bottom: 1.2rem;
+  font-family: Georgia, serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a99d90;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(169, 157, 144, 0.35);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.blog-back-link:hover {
+  color: #111;
+  border-color: rgba(17, 17, 17, 0.4);
+}
+
+.blog-markdown {
+  max-width: 680px;
+  padding: 40px 0 0;
+}
+
+.blog-markdown p,
+.blog-markdown blockquote {
+  font-family: Georgia, serif;
+}
+
+.blog-markdown p {
+  font-size: 1.02rem;
+  line-height: 1.95;
+  color: #2c2925;
+  margin: 0 0 1.25rem;
+}
+
+.blog-markdown blockquote {
+  margin: 2rem 0 2.2rem;
+  padding: 0.3rem 0 0.3rem 1.35rem;
+  border-left: 1px solid rgba(154, 105, 50, 0.5);
+  color: #62584f;
+}
+
+.blog-markdown blockquote p {
+  color: #62584f;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.blog-markdown blockquote p:last-child,
+.blog-markdown p:last-child {
+  margin-bottom: 0;
+}
+
 .contact-list {
   display: flex;
   flex-direction: column;
