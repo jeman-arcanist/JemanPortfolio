@@ -4269,11 +4269,12 @@ header#overview .hero-image-wrap {
 .hero-name,
 header#overview .hero-name {
   max-width: none;
-  width: max-content;
+  width: 100%;
   white-space: nowrap;
   font-size: clamp(3.4rem, 6.25vw, 6.9rem);
   line-height: 0.92;
   word-spacing: 0.08em;
+  text-align: center;
 }
 
 .hero-text,
@@ -4456,7 +4457,7 @@ header#overview .hero-portrait {
   height: 56px !important;
   flex: 0 0 56px;
   object-fit: cover;
-  border: 1px solid var(--line) !important;
+  border: 0 !important;
   border-radius: 16px !important;
   background: #050505;
   padding: 0 !important;
