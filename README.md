@@ -24,7 +24,7 @@ Search `index.html` for these values and update them:
 
 ```text
 jemankalita@gmail.com
-github.com/jemankalita
+github.com/jeman-arcanist
 linkedin.com/in/jemankalita
 @xerotwts
 ```
