@@ -3383,10 +3383,10 @@ header#overview + .divider {
 
 /* Specific section styling overlays */
 [data-portal="people"] .media-layer {
-  filter: grayscale(1) brightness(0.5) contrast(1.2);
+  filter: saturate(1.05) brightness(0.82) contrast(1.04);
 }
 [data-portal="people"] .media-layer.active {
-  filter: grayscale(1) brightness(0.7) contrast(1.1);
+  filter: saturate(1.08) brightness(0.94) contrast(1.02);
 }
 
 [data-portal="movies"] .media-layer {
