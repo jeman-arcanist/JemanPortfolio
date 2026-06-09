@@ -4302,6 +4302,17 @@ header#overview .hero-portrait,
   filter: none;
 }
 
+.hero-portrait,
+header#overview .hero-portrait {
+  filter: grayscale(1) contrast(1.08);
+  transition: filter 0.28s ease;
+}
+
+.hero-image-wrap:hover .hero-portrait,
+header#overview .hero-image-wrap:hover .hero-portrait {
+  filter: grayscale(0) contrast(1);
+}
+
 .hero-image-wrap,
 header#overview .hero-image-wrap {
   overflow: hidden;
@@ -4453,12 +4464,12 @@ header#overview .hero-portrait {
 }
 
 .stealth-logo-img {
-  width: 56px !important;
-  height: 56px !important;
-  flex: 0 0 56px;
+  width: 44px !important;
+  height: 44px !important;
+  flex: 0 0 44px;
   object-fit: cover;
   border: 0 !important;
-  border-radius: 16px !important;
+  border-radius: 14px !important;
   background: #050505;
   padding: 0 !important;
 }
