@@ -126,6 +126,79 @@ const BLOG_POSTS = {
   }
 };
 
+const PERSON_PROFILES = {
+  'peter-thiel': {
+    name: 'Peter Thiel',
+    kicker: 'The obvious',
+    image: '/interests/inspiration/What Peter Thiel Saw in Jeffrey Epstein.jpg',
+    summary: 'Contrarian thinking, monopoly theory, and building category-defining companies.',
+    notes: ['Competition is for losers when monopoly is possible.', 'Study secrets, power laws, distribution, and category creation.', 'Useful for thinking about VC, markets, and asymmetric bets.']
+  },
+  'elon-musk': {
+    name: 'Elon Musk',
+    kicker: 'The obvious',
+    image: '/interests/inspiration/Elon-Musk.png',
+    summary: 'Extreme execution, first-principles engineering, and taking absurdly large swings.',
+    notes: ['Compress timelines until the impossible becomes merely hard.', 'Reason from physics, not convention.', 'Useful model for ambition, manufacturing, and technical leadership.']
+  },
+  'andrej-karpathy': {
+    name: 'Andrej Karpathy',
+    kicker: 'AI',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Andrej_Karpathy_at_Stanford_2019.jpg/640px-Andrej_Karpathy_at_Stanford_2019.jpg',
+    summary: 'Clear AI education, deep learning taste, and rare engineer-teacher energy.',
+    notes: ['Explains complex systems without fake simplicity.', 'Good model for learning in public and building intuition.', 'Relevant to AI, ML systems, and technical communication.']
+  },
+  'alexandr-wang': {
+    name: 'Alexandr Wang',
+    kicker: 'AI',
+    image: '/interests/inspiration/meta-scale-ai-news-inc.png',
+    summary: 'Scale AI founder, MIT dropout, and Meta superintelligence leader.',
+    notes: ['Built infrastructure around data as AI leverage.', 'A useful study in timing, enterprise sales, and frontier AI positioning.', 'Relevant to the intersection of startups, AI, and national-scale markets.']
+  },
+  'jensen-huang': {
+    name: 'Jensen Huang',
+    kicker: 'Builder',
+    image: '/interests/inspiration/Jensen-Huang-copy.png',
+    summary: 'Long-term hardware bets, market taste, and relentless founder stamina.',
+    notes: ['Decades of compounding before the world noticed.', 'Strong model for founder-led technical strategy.', 'Useful for thinking about infrastructure and platform shifts.']
+  },
+  'sam-altman': {
+    name: 'Sam Altman',
+    kicker: 'Builder',
+    image: '/interests/inspiration/Sam-Altman.png',
+    summary: 'Ambition, networks, AI, and scaling institutions around powerful ideas.',
+    notes: ['Understands leverage through people, capital, and distribution.', 'Useful model for operating at the frontier.', 'Good study for startup strategy and AI-era institution building.']
+  },
+  'dario-amodei': {
+    name: 'Dario Amodei',
+    kicker: 'AI Safety',
+    image: '/interests/inspiration/Dario-Amodei-copy.png',
+    summary: 'Technical depth, AI safety, and building serious labs with clear principles.',
+    notes: ['Pairs capability with risk awareness.', 'Useful model for principled technical leadership.', 'Relevant to AI safety, research taste, and lab culture.']
+  },
+  'mark-zuckerberg': {
+    name: 'Mark Zuckerberg',
+    kicker: 'Builder',
+    image: '/interests/inspiration/Mark-Zuckerberg.png',
+    summary: 'Persistence, distribution, and aggressive founder-led pivots.',
+    notes: ['Distribution is a weapon.', 'Keeps making large bets even after public criticism.', 'Useful for studying social products, company control, and execution.']
+  },
+  'jim-simons': {
+    name: 'Jim Simons',
+    kicker: 'Markets',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/James_Harris_Simons.jpg/640px-James_Harris_Simons.jpg',
+    summary: 'Quantitative markets, secrecy, compounding, and math as an edge.',
+    notes: ['Turned math and data into one of the greatest investing machines.', 'Useful for studying systematic trading and research culture.', 'Strong reminder that edge comes from depth, not noise.']
+  },
+  'ken-griffin': {
+    name: 'Ken Griffin',
+    kicker: 'Markets',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Ken_Griffin_%2852792249920%29_%28cropped%29.jpg/640px-Ken_Griffin_%2852792249920%29_%28cropped%29.jpg',
+    summary: 'Risk, market structure, operational intensity, and institutional scale.',
+    notes: ['Built at the intersection of trading, systems, and talent density.', 'Useful for thinking about scale in finance.', 'Good model for intensity and operational discipline.']
+  }
+};
+
 const DEFAULT_META = {
   title: 'Jeman Kalita — Architecting Systems, Quant & AI',
   description: 'The personal digital archive of Jeman Kalita. Building at the intersection of quantitative finance, artificial intelligence, and high-performance software systems.',
@@ -170,7 +243,12 @@ function getRouteTarget() {
   if (blogPath && BLOG_POSTS[blogPath[1]]) return BLOG_POSTS[blogPath[1]].pageId;
 
   const pathPage = path.replace(/^\//, '');
-  const validPages = ['projects', 'blogs', 'interests', 'contact'];
+  const personPath = pathPage.match(/^interests\/inspirations\/([^/]+)$/);
+  if (personPath && PERSON_PROFILES[personPath[1]]) return 'inspiration-person:' + personPath[1];
+
+  if (pathPage === 'interests/inspirations') return 'inspirations';
+
+  const validPages = ['projects', 'blogs', 'interests', 'inspirations', 'contact'];
   if (validPages.includes(pathPage)) return pathPage;
 
   const rawHash = location.hash.replace(/^#(page-)?/, '') || 'home';
@@ -180,10 +258,36 @@ function getRouteTarget() {
 function routeForPage(pageId) {
   const post = Object.values(BLOG_POSTS).find(item => item.pageId === pageId);
   if (post) return post.slug;
+  if (pageId.startsWith('inspiration-person:')) return '/interests/inspirations/' + pageId.split(':')[1];
+  if (pageId === 'inspirations') return '/interests/inspirations';
   return pageId === 'home' ? '/' : '/' + pageId;
 }
 
+function renderPersonProfile(slug) {
+  const profile = PERSON_PROFILES[slug];
+  if (!profile) return;
+
+  const photo = document.getElementById('person-photo');
+  const name = document.getElementById('person-name');
+  const kicker = document.getElementById('person-kicker');
+  const summary = document.getElementById('person-summary');
+  const notes = document.getElementById('person-notes');
+
+  if (photo) {
+    photo.src = profile.image;
+    photo.alt = profile.name;
+  }
+  if (name) name.textContent = profile.name;
+  if (kicker) kicker.textContent = profile.kicker;
+  if (summary) summary.textContent = profile.summary;
+  if (notes) {
+    notes.innerHTML = profile.notes.map(note => `<p class="person-note">${note}</p>`).join('');
+  }
+}
+
 function showPage(pageId, shouldPush = true) {
+  const personSlug = pageId.startsWith('inspiration-person:') ? pageId.split(':')[1] : null;
+  const domPageId = personSlug ? 'inspiration-person' : pageId;
   const allPages = document.querySelectorAll('.page');
   const allLinks = document.querySelectorAll('.nav-links a, .nav-brand');
 
@@ -192,8 +296,10 @@ function showPage(pageId, shouldPush = true) {
     p.style.display = 'none';
   });
 
-  const target = document.getElementById('page-' + pageId);
+  const target = document.getElementById('page-' + domPageId);
   if (!target) return;
+
+  if (personSlug) renderPersonProfile(personSlug);
 
   // Force animation restart by briefly removing and re-adding active
   target.style.display = 'block';
@@ -203,7 +309,7 @@ function showPage(pageId, shouldPush = true) {
 
   // Update nav active state
   allLinks.forEach(a => {
-    a.classList.toggle('active', a.dataset.page === pageId || (pageId.startsWith('blog-') && a.dataset.page === 'blogs'));
+    a.classList.toggle('active', a.dataset.page === pageId || (pageId.startsWith('blog-') && a.dataset.page === 'blogs') || (pageId.startsWith('inspiration-person:') && a.dataset.page === 'interests'));
   });
   syncNavSlider();
 
@@ -220,7 +326,7 @@ function showPage(pageId, shouldPush = true) {
 
   // Re-trigger word reveals
   if (pageId === 'home') splitTextForReveal('#page-home .hero-name');
-  splitTextForReveal(`#page-${pageId} .page-title`);
+  splitTextForReveal(`#page-${domPageId} .page-title`);
 
   updateMetadata(pageId);
 
@@ -243,6 +349,15 @@ document.querySelectorAll('[data-blog-slug]').forEach(link => {
     if (!post) return;
     e.preventDefault();
     showPage(post.pageId);
+  });
+});
+
+document.querySelectorAll('[data-person]').forEach(link => {
+  link.addEventListener('click', e => {
+    const slug = link.dataset.person;
+    if (!PERSON_PROFILES[slug]) return;
+    e.preventDefault();
+    showPage('inspiration-person:' + slug);
   });
 });
 
@@ -269,13 +384,17 @@ if (heroWrap) {
   });
 
   const startEl = document.getElementById('page-' + startPage);
-  if (startEl) {
-    startEl.style.display = 'block';
-    startEl.classList.add('active');
+  const startPersonSlug = startPage.startsWith('inspiration-person:') ? startPage.split(':')[1] : null;
+  const resolvedStartPage = startPersonSlug ? 'inspiration-person' : startPage;
+  if (startPersonSlug) renderPersonProfile(startPersonSlug);
+  const resolvedStartEl = document.getElementById('page-' + resolvedStartPage);
+  if (resolvedStartEl) {
+    resolvedStartEl.style.display = 'block';
+    resolvedStartEl.classList.add('active');
   }
 
   document.querySelectorAll('[data-page]').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === startPage || (startPage.startsWith('blog-') && a.dataset.page === 'blogs'));
+    a.classList.toggle('active', a.dataset.page === startPage || (startPage.startsWith('blog-') && a.dataset.page === 'blogs') || (startPage.startsWith('inspiration-person:') && a.dataset.page === 'interests'));
   });
 
   syncNavSlider();
