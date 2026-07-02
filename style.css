@@ -4871,3 +4871,230 @@ header#overview .hero-portrait {
   }
 }
 
+/* --- Final typography system: quiet mono portfolio --- */
+html,
+body {
+  font-family: var(--font-mono);
+}
+
+.hero-name,
+header#overview .hero-name,
+.page-title,
+.coming-title,
+.view-title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.hero-name,
+header#overview .hero-name {
+  font-size: clamp(3rem, 5vw, 5.65rem);
+  line-height: 0.98;
+  word-spacing: 0.02em;
+}
+
+.page-title {
+  max-width: 13ch;
+  font-size: clamp(2.6rem, 5vw, 4.9rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.page-subtitle,
+.hero-philosophy,
+.body-text,
+header#overview .body-text,
+.achieve-desc,
+.sport-achievement,
+.work-card p,
+.blog-card p,
+.blog-markdown p,
+.blog-markdown blockquote,
+.contact-link,
+.fun-project-list,
+.kill-text {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+.body-text,
+header#overview .body-text,
+.blog-markdown p,
+.blog-markdown blockquote {
+  font-size: clamp(0.95rem, 1.05vw, 1.03rem);
+  line-height: 1.82;
+}
+
+.page-subtitle,
+.hero-philosophy,
+.achieve-desc,
+.sport-achievement,
+.blog-card p {
+  color: var(--muted);
+}
+
+.inline-age,
+.edu-school,
+.achieve-title,
+.sport-name,
+.work-card h2,
+.blog-card h2,
+.card-title,
+.banner-title,
+.kill-list-heading {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.section-label,
+.about-label,
+.contact-label,
+.edu-detail,
+.edu-capsule,
+.status-label,
+.project-kicker,
+.blog-card-meta,
+.blog-article-meta,
+.blog-read-more,
+.blog-back-link,
+.card-kicker,
+.card-num {
+  font-family: var(--font-mono);
+  letter-spacing: 0.11em;
+}
+
+#page-contact .page-header {
+  padding-bottom: clamp(1.8rem, 4vw, 3rem);
+}
+
+#page-contact .page-subtitle {
+  max-width: 44rem;
+}
+
+.contact-shell {
+  max-width: 900px;
+}
+
+.contact-list {
+  display: grid;
+  gap: 0;
+  max-width: 900px;
+}
+
+.contact-row:first-child,
+.contact-row:not(:first-child) {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.28fr) minmax(0, 1fr);
+  align-items: baseline;
+  width: 100%;
+  margin-right: 0;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact-row:first-child .contact-label,
+.contact-row:not(:first-child) .contact-label {
+  display: block;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.contact-row:first-child .contact-link,
+.contact-row:not(:first-child) .contact-link {
+  display: inline;
+  max-width: 100%;
+  color: var(--text);
+  font-size: clamp(1rem, 1.55vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  word-break: break-word;
+  border-bottom: 1px solid transparent;
+}
+
+.contact-row:first-child .contact-link:hover,
+.contact-row:not(:first-child) .contact-link:hover {
+  border-color: var(--text);
+}
+
+.kill-list-shell {
+  align-items: start;
+  gap: clamp(2.5rem, 8vw, 6rem);
+}
+
+.kill-list-heading {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.kill-list-items {
+  gap: 0.56rem;
+}
+
+.kill-item {
+  grid-template-columns: 1rem minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.72rem;
+  padding: 0;
+}
+
+.kill-marker {
+  width: 0.78rem;
+  height: 0.78rem;
+  margin-top: 0.42rem;
+  border-radius: 3px;
+}
+
+.kill-text {
+  font-size: clamp(0.92rem, 1.05vw, 1rem);
+  line-height: 1.72;
+}
+
+.kill-item:hover {
+  background: transparent;
+  transform: translateX(3px);
+}
+
+@media (max-width: 980px) {
+  .hero-name,
+  header#overview .hero-name {
+    font-size: clamp(2.85rem, 8vw, 4.5rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-name,
+  header#overview .hero-name {
+    font-size: clamp(2rem, 9.8vw, 3.2rem);
+    letter-spacing: -0.035em;
+  }
+
+  .page-title {
+    font-size: clamp(2.15rem, 11vw, 3.3rem);
+  }
+
+  .contact-row:first-child,
+  .contact-row:not(:first-child) {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+    padding: 1rem 0;
+  }
+
+  .contact-row:first-child .contact-link,
+  .contact-row:not(:first-child) .contact-link {
+    font-size: 1rem;
+  }
+
+  .kill-list-shell {
+    gap: 2rem;
+  }
+}
+
