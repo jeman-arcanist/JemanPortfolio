@@ -1,0 +1,11 @@
+{
+  "name": "Jeman Kalita Portfolio",
+  "install": "python3 --version",
+  "terminals": [
+    {
+      "name": "dev-server",
+      "command": "python3 .cursor/serve.py 8000"
+    }
+  ],
+  "ports": [8000]
+}
