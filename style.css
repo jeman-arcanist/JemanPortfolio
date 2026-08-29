@@ -5110,3 +5110,8 @@ header#overview .body-text,
   }
 }
 
+/* Hidden from top navigation; pages stay reachable via direct URL/routing */
+.nav-links a.nav-hidden {
+  display: none;
+}
+
