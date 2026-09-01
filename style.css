@@ -5115,3 +5115,80 @@ header#overview .body-text,
   display: none;
 }
 
+/* Hero name + portrait stay inside the ~1120px column at any zoom.
+   Zoom-out inflates vw while max-width does not, so a nowrap name and a
+   vw-sized photo used to collide. Cap both to the column, not the viewport. */
+.hero-inner,
+header#overview .hero-inner {
+  grid-template-columns: minmax(0, 1fr) minmax(148px, 240px);
+  column-gap: clamp(1.25rem, 2.4vw, 2.5rem);
+}
+
+.hero-text,
+header#overview .hero-text {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.hero-name,
+header#overview .hero-name {
+  grid-column: auto;
+  box-sizing: border-box;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+  font-size: clamp(1.85rem, 4.1vw, 4.25rem);
+}
+
+.hero-image-wrap,
+header#overview .hero-image-wrap {
+  grid-column: auto;
+  justify-self: end;
+  align-self: start;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.hero-portrait,
+header#overview .hero-portrait {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 980px) {
+  .hero-inner,
+  header#overview .hero-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(132px, 200px);
+  }
+
+  .hero-name,
+  header#overview .hero-name {
+    font-size: clamp(1.7rem, 4.6vw, 3.35rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-inner,
+  header#overview .hero-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-name,
+  header#overview .hero-name {
+    white-space: normal;
+    overflow: visible;
+    text-align: center;
+    font-size: clamp(1.95rem, 8.8vw, 3.1rem);
+  }
+
+  .hero-image-wrap,
+  header#overview .hero-image-wrap {
+    max-width: min(230px, 60vw);
+    justify-self: center;
+  }
+}
+
